@@ -3,3 +3,6 @@ __pycache__/
 .DS_Store
 .vscode
 Python Notebooks/.DS_Store
+Python Notebooks/__pycache__/
+Python Notebooks/.ipynb_checkpoints/
+

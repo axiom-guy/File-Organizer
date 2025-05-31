@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
-
-
 import os
 import re
 import shutil
@@ -12,10 +9,6 @@ import docx
 from pptx import Presentation
 import pdfplumber
 import pytesseract
-
-
-# In[3]:
-
 
 def read_text(path):
     try:
@@ -26,10 +19,6 @@ def read_text(path):
         print(f"Error reading text file {path}: {e}")
         return None
 
-
-# In[4]:
-
-
 def read_docx(path):
     try:
         doc=docx.Document(path)
@@ -39,10 +28,6 @@ def read_docx(path):
         print(f"Error reading docx file {path}: {e}")
         return None
 
-
-# In[5]:
-
-
 def read_pdf(path):
     try:
         with pdfplumber.open(path) as f:
@@ -50,10 +35,6 @@ def read_pdf(path):
     except Exception as e:
         print(f"Error reading pdf file {path}: {e}")
         return None
-
-
-# In[6]:
-
 
 def read_spreadsheet(path):
     try:
@@ -67,10 +48,6 @@ def read_spreadsheet(path):
         print(f"Error reading spreadsheet file {path}: {e}")
         return None
 
-
-# In[7]:
-
-
 def read_ppt(path):
     try:
         prs=Presentation(path)
@@ -79,14 +56,10 @@ def read_ppt(path):
             for shape in slide.shapes:
                 if hasattr(shape, "text"):
                     f_text.append(shape.text)
-        return '\n'.join(full_text)
+        return '\n'.join(f_text)
     except Exception as e:
         print(f"Error reading ppt file {path}: {e}")
         return None
-
-
-# In[8]:
-
 
 def read_file(path):
     ext=os.path.splitext(path.lower())[1]
@@ -103,10 +76,6 @@ def read_file(path):
     else:
         return None
 
-
-# In[9]:
-
-
 def collect_file_path(base_path):
     if os.path.isfile(base_path):
         if not os.path.basename(base_path).startswith('.'):
@@ -119,10 +88,6 @@ def collect_file_path(base_path):
                     file_paths.append(os.path.join(root, file))
         return file_paths
 
-
-# In[10]:
-
-
 def seperate_files(file_paths):
     image_ext=('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff')
     text_ext=('.txt', '.docx', '.doc', '.pdf', '.md', '.xls', '.xlsx', '.ppt', '.pptx', '.csv')
@@ -130,4 +95,3 @@ def seperate_files(file_paths):
     text_files=[f for f in file_paths if os.path.splitext(f.lower())[1] in text_ext ]
 
     return image_files,text_files
-

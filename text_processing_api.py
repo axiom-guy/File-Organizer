@@ -1,44 +1,17 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[32]:
-
-
 import re
 import os
 import time
 import nltk
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
-from nltk.probability import FreqDist
 from nltk.stem import WordNetLemmatizer
 from alive_progress import alive_bar
+from common_functions import clean_text
 
-
-# In[33]:
-
-
-def clean_text(text,max_words):
-    text = re.sub(r'[^\w\s]', ' ', text)
-    text = re.sub(r'\d+', '', text)
-    text = text.strip()
-    words = word_tokenize(text)
-    words = [word.lower() for word in words if word.isalpha()]
-    words = [lemmatizer.lemmatize(word) for word in words]
-    filtered_words = []
-    seen = set()
-    for word in words:
-        if word not in all_unwanted_words and word not in seen:
-            filtered_words.append(word)
-            seen.add(word)
-    filtered_words = filtered_words[:max_words]
-    return '_'.join(filtered_words)
-
-
-# In[34]:
-
-
-def generate_name(path,text,bar,client,model):
+def generate_name_text_api(path,text,bar,client,model):
     # summarizing
     prompt = f"""For the given text, give me 100 words concise summary, focusing on key points.
     Text: {text}
@@ -56,21 +29,24 @@ def generate_name(path,text,bar,client,model):
     bar()
 
     # filename
-    file_prompt=f"""Using the summary below, create a clear and descriptive filename that reflects the core subject of the document.
-    - The filename should be no more than 3 words long.
-    - Use only nouns or noun phrases—do not begin with verbs like 'shows', 'explains', or 'describes'.
-    - Avoid generic terms such as 'document', 'pdf', or 'text'.
-    - Use only lowercase letters and separate words with underscores.
-    Summary: {summary}
-    Examples:
-    1. Summary: A detailed study on medieval architecture in Western Europe.
-    Filename: medieval_architecture_europe
-    2. Summary: A report analyzing global water scarcity trends.
-    Filename: global_water_scarcity
-    Now generate the filename.
-    Only return the filename—no explanations or extra text.
-    Filename:"""
+    file_prompt =  f"""Based on the summary below, generate a specific and descriptive filename that captures the essence of the document.
+    Limit the filename to a maximum of 3 words. Use nouns and avoid starting with verbs like 'depicts', 'shows', 'presents', etc.
+    Do not include any data type words like 'text', 'document', 'pdf', etc. Use only letters and connect words with underscores.
 
+    Summary: {summary}
+
+    Examples:
+    1. Summary: A research paper on the fundamentals of string theory.
+        Filename: fundamentals_of_string_theory
+
+    2. Summary: An article discussing the effects of climate change on polar bears.
+        Filename: climate_change_polar_bears
+
+    Now generate the filename.
+
+    Output only the filename, without any additional text.
+
+    Filename:"""
     completion_filename=client.chat.completions.create(
         model=model,
         messages=[
@@ -105,7 +81,7 @@ def generate_name(path,text,bar,client,model):
         messages=[
             {
                 "role": "user",
-                "content": f"{file_prompt}"
+                "content": f"{folder_prompt}"
             }
         ],
     )
@@ -113,38 +89,31 @@ def generate_name(path,text,bar,client,model):
     foldername=re.sub(r'^Category:\s*','',foldername,flags=re.IGNORECASE).strip()
     bar()
 
-    stop_words = set(stopwords.words('english'))
-    lemmatizer = WordNetLemmatizer()
-    filename=clean_text(filename,3)
+    #TODO- Fix the commented. 
+    
+    # stop_words = set(stopwords.words('english'))
+    # lemmatizer = WordNetLemmatizer()
+    # filename=clean_text(filename,3)
     if not filename:
         filename='Untitled'
-    foldername=clean_text(foldername,3)
+    # foldername=clean_text(foldername,3)
     if not foldername:
         foldername="Untitled"
     return (filename,foldername)
 
-
-# In[35]:
-
-
-def process_file(path_text,client,model):
+def process_file_text_api(path_text,client,model):
     path,text=path_text
     start=time.time()
     with alive_bar(3,title=f"Processing {os.path.basename(path)}") as bar:
-        filename,foldername=generate_name(text,path,bar,client,model)
+        filename,foldername=generate_name_text_api(path,text,bar,client,model)
     end=time.time()
 
     print(f"File:{os.path.basename(path)}. Processing done in {end-start:.2f}")
     
     return {"path":path,"file_name":filename,"folder_name":foldername}
 
-
-# In[36]:
-
-
-def process_files(path_text_files,client,model):
+def process_files_text_api(path_text_files,client,model):
     result=[]
     for path_text in path_text_files:
-        result.append(process_file(path_text,client,model))
+        result.append(process_file_text_api(path_text,client,model))
     return result
-
