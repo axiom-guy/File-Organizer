@@ -11,11 +11,11 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import InferenceClient
 from read_data import read_docx
 
-model="meta-llama/Llama-3.1-8B-Instruct"
+model_name="meta-llama/Llama-3.1-8B-Instruct"
 
 start=time.time()
-tokenizer=AutoTokenizer.from_pretrained(model)
-model=AutoModelForCausalLM.from_pretrained(model,device_map='auto')
+tokenizer=AutoTokenizer.from_pretrained(model_name)
+model=AutoModelForCausalLM.from_pretrained(model_name,device_map='auto')
 end=time.time()
 print(f"Time Taken to load model:{end-start:.2f}s")
 
@@ -32,5 +32,5 @@ path_text=[(path,text)]
 process_files_text_local(path_text,tokenizer,model)
 
 # api
-process_files_text_api(path_text,client,model)
+process_files_text_api(path_text,client,model_name)
 
