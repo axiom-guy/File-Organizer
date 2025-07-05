@@ -8,8 +8,9 @@ import pandas as pd
 import docx
 from pptx import Presentation
 import pdfplumber
-import pytesseract
+from common_functions import suppress_stderr
 
+@suppress_stderr
 def read_text(path):
     try:
         with open(path,errors='ignore') as f:
@@ -19,6 +20,7 @@ def read_text(path):
         print(f"Error reading text file {path}: {e}")
         return None
 
+@suppress_stderr
 def read_docx(path):
     try:
         doc=docx.Document(path)
@@ -28,6 +30,7 @@ def read_docx(path):
         print(f"Error reading docx file {path}: {e}")
         return None
 
+@suppress_stderr
 def read_pdf(path):
     try:
         with pdfplumber.open(path) as f:
@@ -36,6 +39,7 @@ def read_pdf(path):
         print(f"Error reading pdf file {path}: {e}")
         return None
 
+@suppress_stderr
 def read_spreadsheet(path):
     try:
         if path.lower().endswith('.csv'):
@@ -48,6 +52,7 @@ def read_spreadsheet(path):
         print(f"Error reading spreadsheet file {path}: {e}")
         return None
 
+@suppress_stderr
 def read_ppt(path):
     try:
         prs=Presentation(path)

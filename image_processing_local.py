@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import re
 import os
 import base64
@@ -13,6 +10,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from alive_progress import alive_bar
+from common_functions import suppress_stderr
+
 
 def image_to_readable(path):
     with open(path, "rb") as f:
@@ -20,9 +19,10 @@ def image_to_readable(path):
         data_url = f"data:image/jpeg;base64,{encoded_image}"
     return data_url
 
+@suppress_stderr
 def generate_name_image(path,bar,llm_image, llm_text):
-    prompt = f"""Read the content in this image.
-    content:""" 
+    prompt = f"""Provide description of this image, focus on main subject.
+    Summary:"""
     image_url=image_to_readable(path)
     print("image_url type:", type(image_url))
     print("image_url:", image_url[:100])  # Print first 100 chars
@@ -119,10 +119,6 @@ def generate_name_image(path,bar,llm_image, llm_text):
     if not foldername:
         foldername="Untitled"
     return (filename,foldername)
-
-
-# In[5]:
-
 
 def process_file_image_local(path_text,llm_image,llm_text):
     path=path_text

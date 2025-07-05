@@ -21,27 +21,32 @@ An intelligent file organization utility that automatically classifies, renames,
 ---
 
 ## 🚀 Getting Started
-
-### 1. Clone the Repository
-
+### 1. Creating and activating virtual environment
 ```bash
 #create and activate a virtual environment
 python -m venv file-organiser
 source file-organiser
+```
 
-#clone the repo
+### 2. Clone the Repository
+```bash
 git clone https://github.com/axiom-guy/File-Organizer.git
 cd File-Organizer
 
-#install dependencies
+```
+### 3. Installing dependencies
+```bash
 pip install -r requirements.txt
+```
 
-#run the organiser.
+### 4.Run the organiser.
+```bash
 python main.py
 ```
 
 ## 🧠 AI Models Used
-Text Models: Meta-Llama-3-8B-Instruct-GGUF
+Text Models: Meta-Llama-3-8B-Instruct-GGUF<br>
 Image Models: MiniCPM-V-2_6-gguf
+
 
 

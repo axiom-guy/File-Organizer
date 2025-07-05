@@ -9,7 +9,9 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from alive_progress import alive_bar
-from common_functions import clean_text
+from common_functions import suppress_stderr
+
+@suppress_stderr
 def generate_name_text_local(path,text,bar,llm):
     # summarizing
     print('stage 2')
