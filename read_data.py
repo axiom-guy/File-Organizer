@@ -38,7 +38,7 @@ def read_pdf(path):
 
 def read_spreadsheet(path):
     try:
-        if file_path.lower().endswith('.csv'):
+        if path.lower().endswith('.csv'):
             df = pd.read_csv(path)
         else:
             df = pd.read_excel(path)
