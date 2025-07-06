@@ -4,7 +4,6 @@
 import re
 import os
 import base64
-from PIL import Image
 import time
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords

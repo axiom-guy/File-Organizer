@@ -5,7 +5,6 @@ import os
 import sys
 import warnings
 import base64
-import torch
 import time
 import re
 
@@ -35,8 +34,6 @@ from read_data import (
 from common_functions import tree_built_preview,organise,suppress_stderr
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import MiniCPMv26ChatHandler
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from huggingface_hub import InferenceClient
 from alive_progress import alive_bar
 
 
@@ -48,23 +45,23 @@ from alive_progress import alive_bar
 # ------------------------
 # Load models with clean logging
 # ------------------------
-@suppress_stderr
+
 def load_llm_text():
     return Llama.from_pretrained(
         repo_id="MaziyarPanahi/Meta-Llama-3-8B-Instruct-GGUF",
         filename="Meta-Llama-3-8B-Instruct.Q4_K_M.gguf",
         n_ctx=4096,
         n_gpu_layers=10,
-        verbose=False
+        verbose=False,
     )
 
 
-@suppress_stderr
+
 def load_llm_image():
     handler = MiniCPMv26ChatHandler.from_pretrained(
         repo_id="openbmb/MiniCPM-V-2_6-gguf",
         filename="*mmproj*",
-        verbose=False
+        verbose=False,
     )
     return Llama.from_pretrained(
         repo_id="openbmb/MiniCPM-V-2_6-gguf",
@@ -72,7 +69,7 @@ def load_llm_image():
         chat_handler=handler,
         n_ctx=4096,
         n_gpu_layers=10,
-        verbose=False
+        verbose=False,
     )
 
 
@@ -100,8 +97,14 @@ def main():
     """)
     # Load models
     print("Loading models.....")
+    start=time.time()
     llm_text = load_llm_text()
+    end=time.time()
+    print(f"text model loaded in {end-start:.2f}s")
+    start=time.time()
     llm_image = load_llm_image()
+    end=time.time()
+    print(f"image model loaded in {end-start:.2f}s")
     print('Loading models complete......')
     print("""
     

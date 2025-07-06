@@ -1,0 +1,11 @@
+# Standard libraries (no need to include):
+# re, os, sys, time, warnings, base64, shutil, collections
+
+# External dependencies
+nltk
+pandas
+python-docx
+python-pptx
+pdfplumber
+alive-progress
+llama-cpp-python
