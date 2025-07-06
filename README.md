@@ -46,7 +46,24 @@ python main.py
 
 ## 🧠 AI Models Used
 Text Models: Meta-Llama-3-8B-Instruct-GGUF<br>
-Image Models: MiniCPM-V-2_6-gguf
+Image Models: MiniCPM-V-2_6-gguf<br>
 
+## 📂 Supported File Types
+**📝 Text Files**
+- `.txt` `.md`
+- `.pdf`
+- `.docx` `.doc`
+- `.xls` `.xlsx` `.csv` 
+- `.ppt` `.pptx`
+
+**🖼 Image Files**
+- `.jpg`
+- `.jpeg`
+- `.png`
+- `.gif`
+- `.bmp`
+- `.tiff`
+## 🤝 Contributing
+PRs and feature suggestions welcome!
 
 
